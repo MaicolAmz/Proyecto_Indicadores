@@ -1,0 +1,229 @@
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<!-- Row -->
+<div class="row">
+    <!-- Column -->
+    <div class="col-lg-3 col-xlg-3 col-md-4">
+        <div class="card">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs profile-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" role="tab">Filtro</a>
+                </li>
+            </ul>
+            <div class="card-body">
+                <form [formGroup]="filtroForm" (ngSubmit)="filtroIndicadorLoading()">
+                    <div class="form-group">
+                        <label>UNIDAD:</label>
+                        <select class="form-control custom-select" formControlName="unidad"
+                            data-placeholder="Selecciona" tabindex="1" [(ngModel)]="filtroForm.value.unidad">
+                            <option class="active" selected value="TODOS">TODOS</option>
+                            <option *ngFor="let unidad of unidades" [value]="unidad._id">
+                                {{unidad.unidad}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!--/span-->
+                    <div class="form-group">
+                        <label class="control-label">DESDE:</label>
+                        <input type="date" class="form-control" placeholder="dd/mm/yyyy" formControlName="desde">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">HASTA:</label>
+                        <input type="date" class="form-control" placeholder="dd/mm/yyyy" formControlName="hasta">
+                    </div>
+
+                    <div class="card-body text-center">
+                        <button type="submit" [disabled]="!filtroForm.valid"
+                            class="waves-effect btn btn-success btn-rounded text-white">
+                            Consultar
+                        </button>
+                    </div>
+
+                </form>
+                <!--/span-->
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-9 col-xlg-9 col-md-8">
+        <div class="card">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs profile-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#home" role="tab">Gráficas</a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div>
+                <div class="card-body">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="d-flex no-block col-lg-8 col-md-6 col-sm-8 col-12">
+                                <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img
+                                        src="../assets/images/icon/staff.png" alt="Income" /></div>
+                                <div class="align-self-center">
+                                    <h6 class="text-muted m-t-10 m-b-0">Cumplimiento Global</h6>
+                                    <h2 class="m-t-0">{{ cumplimientoGlobal | percent: '1.1-2' }}</h2>
+                                    <span class="label label-success label-rounded" *ngIf="(cumplimientoGlobal * 100) >= 85 
+                                                && (cumplimientoGlobal * 100) <= 114">
+                                        Bueno
+                                    </span>
+                                    <span class="label label-warning label-rounded" *ngIf="(cumplimientoGlobal * 100) >= 70 
+                                                && (cumplimientoGlobal * 100) <= 84">
+                                        Medio
+                                    </span>
+                                    <span class="label label-danger label-rounded"
+                                        *ngIf="(cumplimientoGlobal * 100) < 70 && (cumplimientoGlobal * 100) > 0">
+                                        Bajo
+                                    </span>
+                                    <span class="label label-primary label-rounded"
+                                        *ngIf="(cumplimientoGlobal * 100) > 114">
+                                        Alto
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="card-body text-center col-lg-4 col-md-6 col-sm-4 col-12">
+                                <button type="submit" [disabled]="!filtroForm.valid || indicadores.length == 0"
+                                    class="waves-effect btn btn-primary btn-rounded text-white" (click)="generateImg()">
+                                    Cargar Reporte
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="cargarReporte">
+                        <div class="card-body text-center">
+                            <button class="waves-effect btn btn-success btn-rounded text-white" (click)="dataArchivo()"
+                                [disabled]="!filtroForm.valid">
+                                Reporte Pdf <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="card-body text-center">
+                            <button class="waves-effect btn btn-success btn-rounded text-white"
+                                (click)="generateExcel()" [disabled]="!filtroForm.valid">
+                                Reporte Excel <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row mt-3" id="screenPPP">
+                        <div class="col-lg-1 col-md-1"></div>
+                        <div style="display: block" class="chart col-lg-10 col-md-10 col-sm-12 col-12">
+                            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                                [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                                [chartType]="barChartType">
+                            </canvas>
+                        </div>
+                        <div class="col-lg-1 col-md-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+</div>
+
+<!-- Row -->
+<hr>
+<!-- ============================================================== -->
+<!-- Indicadores -->
+<!-- ============================================================== -->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title">
+                            <span class="lstick"></span>
+                            {{ indicadores.length }} Indicadores Filtrados
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="form-inline pt-3 col-lg-4 col-md-4 col-sm-5 col-12">Mostrar &nbsp;
+                        <select id="demo-show-entries">
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="5">5</option>
+                        </select> &nbsp; entradas
+                    </label>
+                    <div class="col-lg-4 col-md-4 col-sm-1"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-5 col-12 pt-3">
+                        <div class="form-group w-100">
+                            <input id="demo-input-search" class="demo-input-search2 w-100" type="text"
+                                placeholder="Buscar">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive m-t-20" id="demoGeneral">
+                    <table id="demo-foo-accordion" class="table m-t-30 table-hover contact-list" data-page-size="5">
+                        <thead>
+                            <tr>
+                                <th class="text-center" data-toggle="false">Indicador</th>
+                                <th class="text-center">Unidad</th>
+                                <th class="text-center">Fecha de Creación</th>
+                                <th class="text-center">Meta</th>
+                                <th class="text-center">Resultado</th>
+                                <th class="text-center">Cumplimiento</th>
+                                <!-- FOOTER -->
+                                <th class="text-center" data-hide="all">Comportamiento</th>
+                                <th class="text-center" data-hide="all">Sentido de la Medición</th>
+                                <th class="text-center" data-hide="all">Periodicidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let indicador of indicadores; let i = index">
+                                <td>{{ indicador.indicador }}</td>
+                                <td class="text-center">{{ indicador.unidad.unidad }}</td>
+                                <td class="text-center">{{ indicador.fechaReporte | date: 'dd-MM-YYYY' }}</td>
+                                <td class="text-center">{{ indicador.meta }}</td>
+                                <td class="text-center">{{ indicador.resultYear[0].result }}</td>
+                                <td class="text-center">
+                                    {{ indicador.resultYear[0].compliance | percent: '1.1-2'}}
+                                    <span class="label label-success label-rounded" *ngIf="(indicador.resultYear[0].compliance * 100) >= 85 
+                                            && (indicador.resultYear[0].compliance * 100) <= 114">
+                                        Bueno
+                                    </span>
+                                    <span class="label label-warning label-rounded" *ngIf="(indicador.resultYear[0].compliance * 100) >= 70 
+                                            && (indicador.resultYear[0].compliance * 100) <= 84">
+                                        Medio
+                                    </span>
+                                    <span class="label label-danger label-rounded"
+                                        *ngIf="(indicador.resultYear[0].compliance * 100) < 70">
+                                        Bajo
+                                    </span>
+                                    <span class="label label-primary label-rounded"
+                                        *ngIf="(indicador.resultYear[0].compliance * 100) > 114">
+                                        Alto
+                                    </span>
+                                </td>
+                                <!-- FOOTER -->
+                                <td class="text-center">{{ indicador.comportamiento }}</td>
+                                <td class="text-center">{{ indicador.sentidoMedicion }}</td>
+                                <td class="text-center">{{ indicador.periodicidad }}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot *ngIf="indicadores.length > 0">
+                            <tr>
+                                <td colspan="6">
+                                    <div class="text-right">
+                                        <ul class="pagination pagination-split m-t-30"> </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- End PAge Content -->
+<!-- ============================================================== -->

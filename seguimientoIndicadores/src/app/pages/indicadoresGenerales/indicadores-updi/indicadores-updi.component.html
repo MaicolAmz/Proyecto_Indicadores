@@ -1,0 +1,87 @@
+
+
+
+  <div class=" container p-3 " class="col-sm">
+    <h1 align="center" id="color">INDICADORES DE GESTIÓN</h1>
+</div>
+<div class="row animated fadeIn m-0 justify-content-center align-items-center vh-100 ">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <input #input (keyup)="buscarIndicador( input.value )" type="text" class="form-control" placeholder="Buscar ofertas...">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row animated fadeIn" *ngIf="cargando">
+
+    <div class="col-sm-12">
+
+        <div class="alert alert-warning text-center">
+            <strong>Cargando</strong>
+            <br>
+            <i class="fa fa-refresh fa-spin fa-2x"></i>
+            <br>
+            <span>Espere por favor</span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row" *ngIf="!cargando">
+        <div class="col-12 table-responsive">
+            <table class="table table-striped btn-table"  class="table table-bordered" id="tableColor" >
+                <thead>
+                    <tr>
+                        <th scope="col" COLSPAN=1 style="background: azure">
+                            <input type="checkbox" id="all" (click)="allDeleteIndicadores()"
+                            [(ngModel)]="checkAll"/>
+                            <label for="all">Todo</label>
+                        </th>
+                        
+                        <th scope="col" COLSPAN=1 style="background: azure">UNIDAD</th>
+                        <th scope="col" COLSPAN=1 style="background: azure">RESPONDE A</th>
+                        <th scope="col" COLSPAN=1 style="background: azure">MACROPROCESO</th>
+                        <th scope="col" COLSPAN=1 style="background: azure">FECHA CREACIÓN</th>
+                        <th scope="col" COLSPAN=1 style="background: azure"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let form of  formularios| paginate: { itemsPerPage: 5, currentPage: totalRegistros }; let i = index">
+                        <td class="justity-content-center" >
+                            <input type="checkbox" [id]="'basic_checkbox_'+i" (click)="selectIndicador(form)"
+                            [(ngModel)]="form.check"/>
+                            <label [for]="'basic_checkbox_'+i">{{i+1}}</label>
+                        </td>
+                        
+                        <td>{{form.unidad.unidad}}</td>
+                        <td>{{form.responde.responde}}</td>
+                        <td>{{form.macroProceso.macroProceso}}</td>
+                        <td>{{form.fechaReporte |date:'dd-MM-yyyy'}}</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-primary col-lg-5 col-md-5 mr-1 mt-1 col-sm-12"
+                            [routerLink]="['/dashboard/indicadoresUpdiId/',form._id]">
+                                <i class="fa fa-pencil-square-o"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-danger col-md-5 col-sm-12 mr-1 mt-1"
+                            (click)="deleteIndicador(form)">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                    </tr>                  
+                </tbody>
+            </table>
+            <pagination-controls (pageChange)="totalRegistros = $event"></pagination-controls>
+        </div>
+    </div>
+    <div class="row justify-content-center" *ngIf="deleteIndicadores.length > 0">
+        <button class="btn btn-danger" (click)="deleteAllService()">
+            Borrar Seleccionados
+        </button>
+    </div>
+</div>

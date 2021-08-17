@@ -1,0 +1,282 @@
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card" id="avanceIndicador">
+            <div class="input-group mb-3">
+                <!-- ROLE UPDI -->
+                <button class="form-control card-header btn btn-success accordion"  data-toggle="collapse" data-target="#collapseAvance" 
+                aria-expanded="false" aria-controls="collapseAvance" *ngIf="role == 'UPDI_ROLE'" >
+                    <h4 class="m-b-0 text-white text-left">AVANCES INDICADOR</h4>
+                </button>
+                <!-- ROLE PLANIFICADOR -->
+                <button class="form-control card-header btn btn-success accordion"  data-toggle="collapse" data-target="#collapseAvance" 
+                aria-expanded="false" aria-controls="collapseAvance" *ngIf="role == 'PLANIFICADOR_ROLE'" >
+                    <h4 class="m-b-0 text-white text-left">AVANCES INDICADOR</h4>
+                </button>
+                <!-- ROLE UPDI -->
+                <button class="btn bg-dark " id="button-addon2" *ngIf="role == 'UPDI_ROLE'" 
+                (click)="updateStateAvanceIndicador(indicadorModelo.solicitaAvanceIndicador)">
+                    <i class="fa fa-lock text-white"></i>
+                </button>
+                <!-- ROLE PLANIFICADR -->
+                <button class="btn bg-dark " id="button-addon2" *ngIf="role == 'PLANIFICADOR_ROLE'" 
+                (click)="solicitudAvanceIndicador(indicadorModelo.solicitaAvanceIndicador)">
+                    <i class="fa fa-lock text-white"></i>                   
+                </button>
+            </div>
+            <div class="card-body collapse" id="collapseAvance" aria-labelledby="headingOne" 
+            [ngClass]="{
+                'show': indicadorModelo.solicitaAvanceIndicador == 'HABILITADA' 
+                &&  (indicadorModelo.solicitaUpd == 'NO' || !indicadorModelo.solicitaUpd || 
+                !indicadorModelo.autorizacion || indicadorModelo.autorizacion == 'NO AUTORIZADO')
+            }" *ngIf="indicadorModelo.solicitaAvanceIndicador == 'HABILITADA' || role == 'UPDI_ROLE'">
+                <form [formGroup]="registerForm">
+                    <div class="form-body">
+
+                        <hr>
+                        <div class="row p-t-20">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">INDICADOR</label>
+                                    <input type="text" id="firstName" class="form-control text-uppercase" placeholder="Indicador"
+                                        formControlName="indicador" [(ngModel)]="indicadorModelo.indicador" disabled>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group has-success">
+                                    <label class="control-label">PERIODICIDAD</label>
+                                    <select [(ngModel)]="indicadorModelo.periodicidad"
+                                        class="form-control custom-select" [formControl]="selected" disabled>
+                                        <option selected>SELECCIONE</option>
+                                        <option value="MENSUAL">MENSUAL</option>
+                                        <option value="TRIMESTRAL">TRIMESTRAL</option>
+
+                                        <option value="CUATRIMESTRAL">CUATRIMESTRAL</option>
+                                        <option value="SEMESTRAL">SEMESTRAL</option>
+                                        <option value="ANUAL">ANUAL</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group has-success">
+                                    <label class="control-label">COMPORTAMIENTO</label>
+                                    <select class="form-control custom-select" formControlName="comportamiento"
+                                        [(ngModel)]="indicadorModelo.comportamiento" disabled>
+                                        <option value="DISCRETO ACUMULADO">DISCRETO ACUMULADO</option>
+                                        <option value="DISCRETO POR PERIODO">DISCRETO POR PERIODO</option>
+                                        <option value="CONTINUO">CONTINUO</option>
+
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group has-success">
+                                    <label class="control-label">SENTIDO DE LA MEDICIÓN</label>
+                                    <select class="form-control custom-select" formControlName="sentidoMedicion"
+                                        [(ngModel)]="indicadorModelo.sentidoMedicion" disabled>
+                                        <option value="ASCENDENTE">ASCENDENTE</option>
+                                        <option value="DESCENDENTE">DESCENDENTE</option>
+
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">LINEA BASE</label>
+                                    <input type="number" id="firstName" class="form-control" placeholder="Linea base "
+                                        formControlName="lineaBase" [(ngModel)]="indicadorModelo.lineaBase" disabled>
+
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">META</label>
+                                    <input type="number" id="firstName" class="form-control" placeholder="Meta"
+                                        formControlName="meta" [(ngModel)]="indicadorModelo.meta" disabled>
+                                   
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" *ngIf="mostrar">
+                            <div class="card" formArrayName="periods"
+                                *ngFor="let period of periods.controls; let i = index;" [ngClass]="classCard">
+                                <div [formGroupName]="i">
+                                    <div class="card-header" [ngClass]="periods.value[i]['class']">
+                                        <div class="form-group">
+                                            <label class="control-label text-white" [attr.for]="'goal' + i">
+                                                META {{opc}} {{i+1}}
+                                            </label>
+                                            <div class="input-group mb-3">
+                                                <input type="number" id="goal" class="form-control"
+                                                    [attr.id]="'goal' + i" formControlName="goal" placeholder="goal"
+                                                    disabled aria-describedby="basic-addon2"
+                                                    min="0">
+                                                <!-- ROLE -->
+                                                <button class="btn bg-dark" type="button" id="button-addon2"
+                                                    *ngIf="role == 'PLANIFICADOR_ROLE'"
+                                                    (click)="solicitudMeta(i, periods.value[i]['enabled'], periods.value[i]['solicitud'])">
+                                                    <i class="fa fa-lock text-white"
+                                                        *ngIf="!periods.value[i]['enabled']"></i>
+                                                    <i class="fa fa-unlock-alt text-white"
+                                                        *ngIf="periods.value[i]['enabled']"></i>
+                                                    <div class="notify mt-1"
+                                                        *ngIf="periods.value[i]['solicitud'] == 'CONTESTADA'">
+                                                        <span class="heartbit"></span>
+                                                        <span class="point" style="height: 10px; width: 10px;"></span>
+                                                    </div>
+                                                </button>
+
+                                                <button class="btn bg-dark" type="button" id="button-addon2"
+                                                    *ngIf="role == 'UPDI_ROLE'"
+                                                    (click)="updateStateMeta(i, periods.value[i]['enabled'], periods.value[i]['solicitud'])">
+                                                    <i class="fa fa-lock text-white"
+                                                        *ngIf="!periods.value[i]['enabled']"></i>
+                                                    <i class="fa fa-unlock-alt text-white"
+                                                        *ngIf="periods.value[i]['enabled']"></i>
+                                                    <div class="notify mt-1"
+                                                        *ngIf="periods.value[i]['solicitud'] == 'EN PROCESO'">
+                                                        <span class="heartbit"></span>
+                                                        <span class="point" style="height: 10px; width: 10px;"></span>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" [ngStyle]="{
+                                        'border-left': periods.value[i]['color'],
+                                        'border-right': periods.value[i]['color']
+                                    }">
+                                        <div class="form-group">
+                                            <label class="control-label" [attr.for]="'result'+ i">
+                                                RESULTADO {{i+1}}
+                                            </label>
+                                            <!-- Enabled Result  -->
+                                            <input type="number" id="result" class="form-control"
+                                                [attr.id]="'result' + i" formControlName="result"
+                                                *ngIf="!periods.value[i]['enabled'] && role == 'PLANIFICADOR_ROLE'"
+                                                disabled [placeholder]="periods.value[i]['result']"
+                                                (change)="calculatCompliance(i)"
+                                                oninput="this.value = Math.max(this.value, 0)" min="0" >
+                                            <!-- Enabled Result  -->
+                                            <input type="number" id="result" class="form-control"
+                                                [attr.id]="'result' + i" formControlName="result"
+                                                *ngIf="periods.value[i]['enabled'] || role == 'UPDI_ROLE'"
+                                                [placeholder]="periods.value[i]['result']"
+                                                (change)="calculatCompliance(i)"
+                                                oninput="this.value = Math.max(this.value, 0)" min="0" 
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="card-footer" [ngStyle]="{
+                                        'border-left': periods.value[i]['color'],
+                                        'border-right': periods.value[i]['color'],
+                                        'border-bottom': periods.value[i]['color']
+                                    }">
+                                        <div class="form-group">
+                                            <label class="control-label" [attr.for]="'compliance'+ i">
+                                                CUMPLIMIENTO {{i+1}}
+                                            </label>
+                                            <input type="number" id="compliance" class="form-control"
+                                                [attr.id]="'compliance' + i" disabled
+                                                [placeholder]="periods.value[i]['compliance'] | percent :'1.1-2'">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--/row-->
+
+                        <!--Avance Indicadores-->
+
+                        <hr class="pb-4">
+
+                        <div class="container" *ngIf="resultYear.length > 0">
+                            <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+                                <strong>El cumplimiento Anual</strong>, esta relacionado a las metas y resultados de los
+                                periodos.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="resultYear.length > 0">
+                            <div class="col-md-3"></div>
+                            <div class="card col-md-6" formArrayName="resultYear"
+                                *ngFor="let year of resultYear.controls; let i = index;">
+                                <div [formGroupName]="i">
+                                    <div class="card-header" [ngClass]="resultYear.value[i]['class']">
+                                        <div class="form-group">
+                                            <label class="control-label text-white">
+                                                META ANUAL
+                                            </label>
+                                            <input type="number" id="firstName" class="form-control"
+                                                [placeholder]="indicadorModelo.meta" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" [ngStyle]="{
+                                        'border-left': resultYear.value[i]['color'],
+                                        'border-right': resultYear.value[i]['color']
+                                    }">
+                                        <div class="form-group">
+                                            <label class="control-label" [attr.for]="'result'+ i">
+                                                RESULTADO ANUAL
+                                            </label>
+                                            <input type="number" id="resultYear.result" class="form-control"
+                                                formControlName="result" [attr.id]="'result' + i"
+                                                [(ngModel)]="resultYear.value[i].result" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer" [ngStyle]="{
+                                        'border-left': resultYear.value[i]['color'],
+                                        'border-right': resultYear.value[i]['color'],
+                                        'border-bottom': resultYear.value[i]['color']
+                                    }">
+                                        <div class="form-group">
+                                            <label class="control-label" [attr.for]="'compliance'+ i">
+                                                CUMPLIMIENTO ANUAL
+                                            </label>
+                                            <input type="number" class="form-control" [attr.id]="'compliance' + i"
+                                                disabled
+                                                [placeholder]="resultYear.value[i]['compliance'] | percent :'1.1-2'">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+
+                    </div>
+                    <div class="form-actions row justify-content-center" *ngIf="periods.length > 0 || role == 'UPDI_ROLE'">
+                        <div class="col-md-3 col-sm-2"></div>
+                        <button *ngIf="role == 'UPDI_ROLE' || indicadorModelo.resultYear[0]['enabled']"
+                            class="btn btn-success col-md-3 col-sm-4 col-12"
+                            (click)="updateAvanceIndicador('Actualización', 'Avance Ingresado con Exito', 'success')">
+                            INGRESAR AVANCES
+                        </button>
+                        <app-exportar-excel class="col-md-3 col-sm-4 col-12" [indicadores]='indicadorModelo'></app-exportar-excel>
+                        <div class="col-md-3 col-sm-2"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row -->
+

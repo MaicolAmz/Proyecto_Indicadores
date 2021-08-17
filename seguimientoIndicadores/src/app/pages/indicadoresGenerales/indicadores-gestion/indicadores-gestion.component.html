@@ -1,0 +1,535 @@
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs profile-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#manual" role="tab">Ingreso Manual</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#subirArchivo" role="tab">Subir Archivo</a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="manual" role="tabpanel">
+                    <div class="card-header bg-success">
+                        <h4 class="m-b-0 text-white">REGISTRO DE INDICADORES DE GESTIÓN</h4>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="registerForm" (ngSubmit)="crearInidcador()">
+                            <div class="form-body">
+
+                                <hr>
+                                <div class="row p-t-20">
+
+                                    <div class="col-md-12">
+                                        <div class="form-group has-success">
+                                            <label class="control-label">SEDE / VICERECTORADO / UNIDAD /
+                                                PROYECTO</label>
+                                            <select class="form-control custom-select" formControlName="unidad">
+                                                <option *ngFor="let unidad of unidades" value="{{unidad._id}}">
+                                                    {{unidad.unidad}}</option>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group has-success">
+                                            <label class="control-label">RESPONDE A:</label>
+                                            <select class="form-control custom-select" formControlName="responde">
+                                                <option *ngFor="let resp of responder" value="{{resp._id}}">
+                                                    {{resp.responde}}</option>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group has-success">
+                                            <label class="control-label">EVALUACIÓN DE DESEMPEÑO</label>
+                                            <select class="form-control custom-select" formControlName="evaluacion">
+                                                <option value="SI">SI</option>
+                                                <option value="NO">NO</option>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group has-success">
+                                            <label class="control-label">MACRO PROCESO</label>
+                                            <select class="form-control custom-select" formControlName="macroProceso">
+                                                <option *ngFor="let mac of macro" value="{{mac._id}}">
+                                                    {{mac.macroProceso}}</option>
+
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">PRODUCTO</label>
+                                            <input type="text" id="firstName" class="form-control"
+                                                placeholder="Producto" formControlName="producto">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">INDICADOR</label>
+                                            <input type="text" id="firstName" class="form-control"
+                                                placeholder="Indicador" formControlName="indicador">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">FÓRMULA</label>
+                                            <input type="text" id="firstName" class="form-control" placeholder="Fórmula"
+                                                formControlName="formula">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">DESCRIPCIÓN</label>
+                                            <input type="text" id="firstName" class="form-control"
+                                                placeholder="Descripción" formControlName="descripcion">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group has-success">
+                                            <label class="control-label">RESPONSABLE</label>
+                                            <select class="form-control custom-select" formControlName="responsable">
+                                                <option value="VICERRECTOR">VICERRECTOR</option>
+                                                <option value="DIRECTOR UNIDAD">DIRECTOR UNIDAD</option>
+                                                <option value="DIRECTOR DEPARTAMENTO">DIRECTOR DEPARTAMENTO</option>
+                                                <option value="COORDINADOR DE PLANIFICACIÓN">COORDINADOR DE
+                                                    PLANIFICACIÓN
+                                                </option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">NOMBRE RESPONSABLE</label>
+                                            <input type="text" id="firstName" class="form-control" placeholder="Nombre"
+                                                formControlName="nombreResponsable">
+
+                                        </div>
+                                    </div>
+
+                                    <!--/span-->
+                                </div>
+                                <!--/row-->
+                                <div class="row">
+
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">FECHA INICIO MEDICIÓN</label>
+                                            <input type="date" class="form-control" placeholder="dd/mm/yyyy"
+                                                formControlName="fechaMedicion">
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">LINEA BASE</label>
+                                            <input type="number" id="firstName" class="form-control"
+                                                placeholder="Linea base " formControlName="lineaBase">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group has-success">
+                                            <label class="control-label">COMPORTAMIENTO</label>
+                                            <select class="form-control custom-select" formControlName="comportamiento">
+                                                <option value="DISCRETO ACUMULADO">DISCRETO ACUMULADO</option>
+                                                <option value="DISCRETO POR PERIODO">DISCRETO POR PERIODO</option>
+                                                <option value="CONTINUO">CONTINUO</option>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group has-success">
+                                            <label class="control-label">UNIDAD DE MEDIDA</label>
+                                            <select class="form-control custom-select" formControlName="unidadMedida">
+                                                <option value="ACTIVIDAD">ACTIVIDAD</option>
+                                                <option value="DÍAS">DÍAS</option>
+                                                <option value="ESCALA">ESCALA</option>
+                                                <option value="ESCALA LIKERT">ESCALA LIKERT</option>
+                                                <option value="HORAS ">HORAS </option>
+                                                <option value="MINUTOS">MINUTOS</option>
+                                                <option value="NÚMERO">NÚMERO</option>
+                                                <option value="PORCENTAJE">PORCENTAJE</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group has-success">
+                                            <label class="control-label">SENTIDO DE LA MEDICIÓN</label>
+                                            <select class="form-control custom-select"
+                                                formControlName="sentidoMedicion">
+                                                <option value="ASCENDENTE">ASCENDENTE</option>
+                                                <option value="DESCENDENTE">DESCENDENTE</option>
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">META</label>
+                                            <input type="number" id="firstName" class="form-control" placeholder="Meta"
+                                                formControlName="meta">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group has-success">
+                                            <label class="control-label">PERIODICIDAD</label>
+                                            <select class="form-control custom-select" [formControl]="selected">
+                                                <option selected>SELECCIONE</option>
+                                                <option value="MENSUAL">MENSUAL</option>
+                                                <option value="TRIMESTRAL">TRIMESTRAL</option>
+
+                                                <option value="CUATRIMESTRAL">CUATRIMESTRAL</option>
+                                                <option value="SEMESTRAL">SEMESTRAL</option>
+                                                <option value="ANUAL">ANUAL</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                </div>
+                                <div>
+                                    <table class="table table-hover" *ngIf="mostrar">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">MESES</th>
+                                                <th scope="col">CANTIDAD</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>ENERO</td>
+                                                <td>
+                                                    <input type="number" id="firstName" class="form-control"
+                                                        placeholder="" formControlName="enero"
+                                                        (change)="validarMetaAnual()">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>FEBRERO</td>
+                                                <td>
+                                                    <input type="number" id="firstName" class="form-control"
+                                                        placeholder="" formControlName="febrero"
+                                                        (change)="validarMetaAnual()">
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">3</th>
+                                                <td>MARZO</td>
+                                                <td>
+                                                    <input type="number" id="firstName" class="form-control"
+                                                        placeholder="" formControlName="marzo"
+                                                        (change)="validarMetaAnual()">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">4</th>
+                                                <td>ABRIL</td>
+                                                <td>
+                                                    <input type="number" id="firstName" class="form-control"
+                                                        placeholder="" formControlName="abril"
+                                                        (change)="validarMetaAnual()">
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <th scope="row">5</th>
+                                                <td>MAYO</td>
+                                                <td>
+                                                    <input type="number" id="firstName" class="form-control"
+                                                        placeholder="" formControlName="mayo"
+                                                        (change)="validarMetaAnual()">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">6</th>
+                                                <td>JUNIO</td>
+                                                <td>
+                                                    <input type="number" id="firstName" class="form-control"
+                                                        placeholder="" formControlName="junio"
+                                                        (change)="validarMetaAnual()">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">7</th>
+                                                <td>JULIO</td>
+                                                <td>
+                                                    <input type="number" id="firstName" class="form-control"
+                                                        placeholder="" formControlName="julio"
+                                                        (change)="validarMetaAnual()">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">8</th>
+                                                <td>AGOSTO</td>
+                                                <td>
+                                                    <input type="number" id="firstName" class="form-control"
+                                                        placeholder="" formControlName="agosto"
+                                                        (change)="validarMetaAnual()">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">9</th>
+                                                <td>SEPTIEMBRE</td>
+                                                <td>
+                                                    <input type="number" id="firstName" class="form-control"
+                                                        placeholder="" formControlName="septiembre"
+                                                        (change)="validarMetaAnual()">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">10</th>
+                                                <td>OCTUBRE</td>
+                                                <td>
+                                                    <input type="number" id="firstName" class="form-control"
+                                                        placeholder="" formControlName="octubre"
+                                                        (change)="validarMetaAnual()">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">11</th>
+                                                <td>NOVIEMBRE</td>
+                                                <td>
+                                                    <input type="number" id="firstName" class="form-control"
+                                                        placeholder="" formControlName="noviembre"
+                                                        (change)="validarMetaAnual()">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">12</th>
+                                                <td>DICIEMBRE</td>
+                                                <td>
+                                                    <input type="number" id="firstName" class="form-control"
+                                                        placeholder="" formControlName="diciembre"
+                                                        (change)="validarMetaAnual()">
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="row" *ngIf="mostrar2">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">TRIMESTRE 1</label>
+                                            <input type="number" id="firstName" class="form-control" placeholder=""
+                                                formControlName="trimestre1" (change)="validarMetaAnual()">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">TRIMESTRE 2</label>
+                                            <input type="number" id="firstName" class="form-control" placeholder=""
+                                                formControlName="trimestre2" (change)="validarMetaAnual()">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">TRIMESTRE 3</label>
+                                            <input type="number" id="firstName" class="form-control" placeholder=""
+                                                formControlName="trimestre3" (change)="validarMetaAnual()">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">TRIMESTRE 4</label>
+                                            <input type="number" id="firstName" class="form-control" placeholder=""
+                                                formControlName="trimestre4" (change)="validarMetaAnual()">
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row" *ngIf="mostrar3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">CUATRIMESTRAL 1</label>
+                                            <input type="number" id="firstName" class="form-control" placeholder=""
+                                                formControlName="cuatrimestral1" (change)="validarMetaAnual()">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">CUATRIMESTRAL 2</label>
+                                            <input type="number" id="firstName" class="form-control" placeholder=""
+                                                formControlName="cuatrimestral2" (change)="validarMetaAnual()">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">CUATRIMESTRAL 3</label>
+                                            <input type="number" id="firstName" class="form-control" placeholder=""
+                                                formControlName="cuatrimestral3" (change)="validarMetaAnual()">
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="row" *ngIf="mostrar4">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">SEMESTRAL 1</label>
+                                            <input type="number" id="firstName" class="form-control" placeholder=""
+                                                formControlName="semestral1" (change)="validarMetaAnual()">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">SEMESTRAL 2</label>
+                                            <input type="number" id="firstName" class="form-control" placeholder=""
+                                                formControlName="semestral2" (change)="validarMetaAnual()">
+
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+                                <div class="row" *ngIf="mostrar5">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">ANUAL</label>
+                                            <input type="number" id="firstName" class="form-control" placeholder=""
+                                                formControlName="anual" (change)="validarMetaAnual()">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">OBSERVACIÓNES</label>
+                                            <input type="text" id="firstName" class="form-control" placeholder=""
+                                                formControlName="observaciones">
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col text-danger">
+
+                                        <p *ngIf="campoNoValido('unidad')">* Seleccione una unidad es obligatorio</p>
+                                        <p *ngIf="campoNoValido('responde')">*A quien responde es obligatorio y tiene
+                                            que ser válido</p>
+                                        <p *ngIf="campoNoValido('evaluacion')">* Seleccione una unidad es obligatorio
+                                        </p>
+                                        <p *ngIf="campoNoValido('macroProceso')">* Seleccione un macro proceso es
+                                            obligatorio</p>
+                                        <p *ngIf="campoNoValido('producto')">* escriba producto es obligatorio</p>
+                                        <p *ngIf="campoNoValido('indicador')">* Escriba un indicador es obligatorio</p>
+                                        <p *ngIf="campoNoValido('formula')">* Escriba una formula es obligatorio</p>
+                                        <p *ngIf="campoNoValido('descripcion')">* Escriba una descripcion es obligatorio
+                                        </p>
+                                        <p *ngIf="campoNoValido('responsable')">* Seleccione un responsable es
+                                            obligatorio</p>
+                                        <p *ngIf="campoNoValido('nombreResponsable')">* Escriba un nombre es obligatorio
+                                        </p>
+                                        <p *ngIf="campoNoValido('fechaMedicion')">* Seleccione una fecha es obligatorio
+                                        </p>
+                                        <p *ngIf="campoNoValido('lineaBase')">* Escriba en la linea base es obligatorio
+                                        </p>
+                                        <p *ngIf="campoNoValido('comportamiento')">* Seleccione un comportamiento es
+                                            obligatorio</p>
+                                        <p *ngIf="campoNoValido('unidadMedida')">* Seleccione una unidad de medida es
+                                            obligatorio</p>
+                                        <p *ngIf="campoNoValido('sentidoMedicion')">* Seleccione sentido de medición es
+                                            obligatorio</p>
+                                        <p *ngIf="campoNoValido('meta')">* Escriba una meta es obligatorio</p>
+                                        <p *ngIf="campoNoValido('observaciones')">*Escribe una observación es
+                                            obligatorio</p>
+
+
+
+
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-success"> GUARDAR<i
+                                        class="fa fa-check"></i></button>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="tab-pane" id="subirArchivo" role="tabpanel">
+                    <div class="card-header bg-success">
+                        <h4 class="m-b-0 text-white">SUBIR ARCHIVO DE INDICADORES DE GESTIÓN</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-body">
+                            <hr>
+                            <app-subir-excel></app-subir-excel>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row -->
